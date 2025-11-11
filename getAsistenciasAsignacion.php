@@ -89,7 +89,7 @@ try {
         FROM asistencias a
         INNER JOIN inscripcion i ON a.idinscripcion = i.idinscripcion
         INNER JOIN estudiante e ON i.idestudiante = e.idestudiante
-        WHERE a.idasignacion = :idasignacion
+    WHERE i.idasignacion = :idasignacion
         ORDER BY a.fecha DESC
     ";
 
