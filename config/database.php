@@ -15,11 +15,11 @@ class Database {
             $this->host = $parts['host'] ?? 'localhost';
             $this->username = $parts['user'] ?? 'root';
             $this->password = $parts['pass'] ?? '';
-            $this->db_name = isset($parts['path']) ? ltrim($parts['path'], '/') : 'checklist';
+            $this->db_name = isset($parts['path']) ? ltrim($parts['path'], '/') : 'railway';
             $this->port = $parts['port'] ?? 3306;
         } else {
             $this->host = getenv('DB_HOST') ?: 'localhost';
-            $this->db_name = getenv('DB_NAME') ?: 'checklist';
+            $this->db_name = getenv('DB_NAME') ?: 'railway';
             $this->username = getenv('DB_USER') ?: 'root';
             $this->password = getenv('DB_PASS') ?: '';
             $this->port = getenv('DB_PORT') ?: 3306;
