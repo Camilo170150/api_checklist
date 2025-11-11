@@ -83,7 +83,9 @@ try {
             DATE_FORMAT(a.fecha, '%Y-%m-%d') AS fecha,
             DATE_FORMAT(a.fecha, '%H:%i:%s') AS hora,
             CONCAT(TRIM(e.nombre), ' ', TRIM(e.apellido)) AS nombre,
-            e.programa AS programa
+            e.programa AS programa,
+            e.idestudiante AS idestudiante,
+            e.correoinst AS email
         FROM asistencias a
         INNER JOIN inscripcion i ON a.idinscripcion = i.idinscripcion
         INNER JOIN estudiante e ON i.idestudiante = e.idestudiante
@@ -99,6 +101,8 @@ try {
     $out = [];
     foreach ($rows as $r) {
         $out[] = [
+            'idestudiante' => $r['idestudiante'] ?? null,
+            'email' => $r['email'] ?? null,
             'nombre' => $r['nombre'],
             'programa' => $r['programa'] ?? null,
             'fecha' => $r['fecha'],
