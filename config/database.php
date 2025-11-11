@@ -36,9 +36,11 @@ class Database {
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
             ]);
         } catch (PDOException $exception) {
-            // No imprimir secrets en producción. Loguear y devolver mensaje genérico.
+            // Registrar el error y devolver null para que el endpoint maneje la respuesta
+            // Evitamos hacer echo porque en producción rompe el formato JSON de la API.
             error_log('DB connection error: ' . $exception->getMessage());
-            echo "Error de conexión a la base de datos.";
+            $this->conn = null;
+            return null;
         }
 
         return $this->conn;
