@@ -58,16 +58,16 @@ $hora_actual = date('H:i:s');
 $fecha_actual = date('Y-m-d');
 
 $sql_h = "
-SELECT h.idasignacion, i.idinscripcion, m.nombremateria
+SELECT i.idinscripcion, m.nombremateria
 FROM horario h
 INNER JOIN asignacion a ON h.idasignacion = a.idasignacion
 INNER JOIN inscripcion i ON i.idasignacion = a.idasignacion
 INNER JOIN materias m ON a.idmateria = m.idmateria
 WHERE i.idestudiante = '$idestudiante'
-  AND h.dia_semana = $dia_semana
-  AND h.hora_inicio <= '$hora_actual'
-  AND h.hora_fin >= '$hora_actual'
-  AND '$fecha_actual' BETWEEN h.fecha_inicio AND h.fecha_fin
+    AND h.dia_semana = $dia_semana
+    AND h.hora_inicio <= '$hora_actual'
+    AND h.hora_fin >= '$hora_actual'
+    AND '$fecha_actual' BETWEEN h.fecha_inicio AND h.fecha_fin
 LIMIT 1
 ";
 
@@ -80,7 +80,6 @@ if (!$res_h || $res_h->num_rows == 0) {
 
 $rowh = $res_h->fetch_assoc();
 $idinscripcion = $rowh['idinscripcion'];
-$idasignacion = $rowh['idasignacion'];
 $materia = $rowh['nombremateria'];
 $fecha = date("Y-m-d H:i:s");
 
@@ -92,9 +91,9 @@ if ($res_chk && $res_chk->num_rows > 0) {
     exit;
 }
 
-$stmt = $conn->prepare("INSERT INTO asistencias (idinscripcion, idasignacion, fecha) VALUES (?, ?, ?)");
+$stmt = $conn->prepare("INSERT INTO asistencias (idinscripcion, fecha) VALUES (?, ?)");
 if ($stmt) {
-    $stmt->bind_param("iis", $idinscripcion, $idasignacion, $fecha);
+    $stmt->bind_param("is", $idinscripcion, $fecha);
     if ($stmt->execute()) {
         echo json_encode(['status' => 'ok', 'message' => "Asistencia registrada en $materia a las $fecha."]);
     } else {
