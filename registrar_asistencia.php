@@ -83,10 +83,23 @@ $idinscripcion = $rowh['idinscripcion'];
 $materia = $rowh['nombremateria'];
 $fecha = date("Y-m-d H:i:s");
 
-$sql_chk = "SELECT 1 FROM asistencias WHERE idinscripcion = '$idinscripcion' AND DATE(fecha) = CURDATE() LIMIT 1";
+$sql_chk = "
+SELECT 1 
+FROM asistencias a
+INNER JOIN inscripcion i ON a.idinscripcion = i.idinscripcion
+INNER JOIN asignacion asig ON i.idasignacion = asig.idasignacion
+WHERE i.idestudiante = '$idestudiante'
+  AND i.idinscripcion = '$idinscripcion'
+  AND DATE(a.fecha) = CURDATE()
+LIMIT 1
+";
+
 $res_chk = $conn->query($sql_chk);
 if ($res_chk && $res_chk->num_rows > 0) {
-    echo json_encode(['status' => 'already', 'message' => "Ya se registró asistencia hoy en $materia."]);
+    echo json_encode([
+        'status' => 'already',
+        'message' => "Ya se registró asistencia hoy para la materia $materia."
+    ]);
     $conn->close();
     exit;
 }
@@ -107,4 +120,5 @@ if ($stmt) {
 }
 
 $conn->close();
+
 ?>
