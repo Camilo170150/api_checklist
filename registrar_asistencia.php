@@ -104,6 +104,7 @@ if ($res_chk && $res_chk->num_rows > 0) {
     exit;
 }
 
+
 $stmt = $conn->prepare("INSERT INTO asistencias (idinscripcion, fecha) VALUES (?, ?)");
 if ($stmt) {
     $stmt->bind_param("is", $idinscripcion, $fecha);
@@ -122,3 +123,4 @@ if ($stmt) {
 $conn->close();
 
 ?>
+
