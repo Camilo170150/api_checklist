@@ -84,12 +84,9 @@ $materia = $rowh['nombremateria'];
 $fecha = date("Y-m-d H:i:s");
 
 $sql_chk = "
-SELECT 1 
+SELECT 1
 FROM asistencias a
-INNER JOIN inscripcion i ON a.idinscripcion = i.idinscripcion
-INNER JOIN asignacion asig ON i.idasignacion = asig.idasignacion
-WHERE i.idestudiante = '$idestudiante'
-  AND i.idinscripcion = '$idinscripcion'
+WHERE a.idinscripcion = '$idinscripcion'
   AND DATE(a.fecha) = CURDATE()
 LIMIT 1
 ";
@@ -123,4 +120,5 @@ if ($stmt) {
 $conn->close();
 
 ?>
+
 
